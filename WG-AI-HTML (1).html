@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+<title>WG AI</title>
+<style>
+:root{--bg:#0e1118;--panel:#151a24;--panel2:#1b2230;--text:#eef2f8;--muted:#9aa6b8;--line:#293244;--accent:#7c6cff;--accent2:#4fd1c5;--user:#272d3d;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+body.light{--bg:#f4f6fb;--panel:#fff;--panel2:#edf0f7;--text:#1b2331;--muted:#667085;--line:#dce2ec;--user:#e8eaff;--shadow:0 18px 50px #25304a18}
+.app{display:flex;min-height:100vh}.sidebar{width:270px;background:var(--panel);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:16px;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:11px;padding:3px 8px 12px}.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,var(--accent),#3ccfc2);display:grid;place-items:center;font-weight:900;color:white;box-shadow:0 8px 24px #7164ff55}.brand strong{font-size:19px;letter-spacing:.3px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:-3px}
+button,input,textarea,select{font:inherit}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer;transition:.18s}.btn:hover{border-color:var(--accent);transform:translateY(-1px)}.newchat{background:var(--accent);border:0;color:white;font-weight:650;padding:12px}.section-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.2px;padding:4px 9px}.history{display:flex;flex-direction:column;gap:5px;overflow:auto}.history button{background:transparent;border:0;color:var(--muted);text-align:left;padding:9px 10px;border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}.history button:hover,.history button.active{background:var(--panel2);color:var(--text)}.sidebottom{margin-top:auto;display:grid;gap:8px}.sidebottom .btn{text-align:left}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;min-height:100vh}.topbar{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:color-mix(in srgb,var(--bg) 88%,transparent);position:sticky;top:0;z-index:2;backdrop-filter:blur(12px)}.top-left{display:flex;align-items:center;gap:12px}.topbar h2{font-size:16px;margin:0}.topbar p{font-size:12px;color:var(--muted);margin:0}.top-actions{display:flex;gap:8px}.iconbtn{width:39px;height:39px;padding:0;display:grid;place-items:center;font-size:17px}
+.content{width:min(900px,100%);margin:0 auto;flex:1;display:flex;flex-direction:column;padding:30px 24px 20px}.welcome{margin:auto 0;text-align:center;padding:35px 0 28px}.orb{width:68px;height:68px;border-radius:23px;margin:0 auto 18px;background:linear-gradient(135deg,var(--accent),#36cfc2);display:grid;place-items:center;font-size:30px;box-shadow:0 14px 40px #7164ff44}.welcome h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 10px;letter-spacing:-1.2px}.gradient{background:linear-gradient(90deg,#9b8cff,#55d9cb);background-clip:text;color:transparent}.welcome p{color:var(--muted);margin:0 auto;max-width:490px}.suggestions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:28px auto 0;max-width:620px}.suggestion{padding:14px;text-align:left;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--text);cursor:pointer}.suggestion:hover{border-color:var(--accent)}.suggestion b{display:block;font-size:13px;margin-bottom:3px}.suggestion span{color:var(--muted);font-size:12px}
+.messages{display:flex;flex-direction:column;gap:20px;padding-bottom:20px}.message{display:flex;gap:12px;max-width:100%;align-items:flex-start}.message.user{flex-direction:row-reverse}.avatar{width:34px;height:34px;flex:0 0 34px;border-radius:12px;display:grid;place-items:center;background:var(--panel2);font-size:15px}.message.assistant .avatar{background:linear-gradient(135deg,var(--accent),#36cfc2);color:white}.bubble{max-width:min(740px,calc(100% - 50px));padding:12px 15px;border-radius:16px;background:var(--panel);border:1px solid var(--line);overflow-wrap:anywhere}.user .bubble{background:var(--user)}.bubble p{margin:0 0 9px}.bubble p:last-child{margin-bottom:0}.bubble pre{white-space:pre-wrap;overflow:auto;background:#090d14;color:#e8edf7;padding:12px;border-radius:10px}.bubble img{max-width:100%;max-height:260px;object-fit:contain;border-radius:10px;display:block;margin-top:8px}.msg-tools{display:flex;gap:6px;margin-top:8px}.tiny{font-size:11px;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:3px 5px}.typing{color:var(--muted);font-size:13px}
+.composer-wrap{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 20%);padding:20px 0 6px}.composer{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:12px;box-shadow:var(--shadow)}.composer textarea{width:100%;resize:none;min-height:54px;max-height:180px;border:0;outline:0;background:transparent;color:var(--text);padding:7px 8px;font-size:15px}.compose-row{display:flex;align-items:center;gap:8px}.compose-left{display:flex;gap:6px;align-items:center;flex:1}.send{background:var(--accent);color:white;border:0;border-radius:12px;width:42px;height:42px;font-size:18px;cursor:pointer}.send:disabled{opacity:.45;cursor:not-allowed}.model-select{max-width:180px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12px}.hint{text-align:center;color:var(--muted);font-size:11px;margin-top:9px}.file-chip{font-size:12px;color:var(--accent2);padding:4px 8px}.status{font-size:11px;color:var(--muted);margin-left:8px}.mobile-menu{display:none}
+@media(max-width:760px){.sidebar{position:fixed;z-index:5;inset:0 auto 0 0;transform:translateX(-105%);transition:.22s;box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.mobile-menu{display:grid}.topbar{padding:0 14px}.content{padding:20px 14px}.suggestions{grid-template-columns:1fr}.topbar p{display:none}.model-select{max-width:135px}.bubble{max-width:calc(100% - 45px)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">WG</div><div><strong>WG AI</strong><small>Twój inteligentny asystent</small></div></div>
+  <button class="btn newchat" id="newChat">＋ &nbsp; Nowa rozmowa</button>
+  <div class="section-label">Ostatnie rozmowy</div>
+  <div class="history" id="history"></div>
+  <div class="sidebottom">
+    <button class="btn" id="themeBtn">☼ &nbsp; Zmień motyw</button>
+    <button class="btn" id="settingsBtn">⚙ &nbsp; Ustawienia połączenia</button>
+    <div class="status" id="connectionStatus">Tryb demonstracyjny · API niepodłączone</div>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div class="top-left"><button class="btn iconbtn mobile-menu" id="menuBtn" aria-label="Menu">☰</button><div><h2>WG AI Advanced</h2><p>Asystent gotowy do pomocy</p></div></div>
+    <div class="top-actions"><button class="btn iconbtn" id="clearBtn" title="Wyczyść rozmowę">⌫</button></div>
+  </header>
+  <section class="content">
+    <div class="welcome" id="welcome">
+      <div class="orb">✦</div><h1>W czym mogę Ci <span class="gradient">pomóc?</span></h1>
+      <p>Zapytaj, napisz, dodaj plik lub skorzystaj z głosu. WG AI jest gotowy do działania.</p>
+      <div class="suggestions">
+        <button class="suggestion" data-prompt="Wyjaśnij mi trudny temat prostymi słowami."><b>✧ Nauka i wyjaśnienia</b><span>Wyjaśnij trudny temat krok po kroku</span></button>
+        <button class="suggestion" data-prompt="Pomóż mi napisać profesjonalny tekst."><b>✎ Pisanie</b><span>Stwórz wiadomość, plan lub tekst</span></button>
+        <button class="suggestion" data-prompt="Napisz prosty przykład kodu HTML i wyjaśnij go."><b>⌘ Programowanie</b><span>Twórz i poprawiaj kod</span></button>
+        <button class="suggestion" data-prompt="Zaproponuj mi kilka kreatywnych pomysłów na projekt."><b>✦ Pomysły</b><span>Znajdź inspirację do nowego projektu</span></button>
+      </div>
+    </div>
+    <div class="messages" id="messages" aria-live="polite"></div>
+    <div class="composer-wrap">
+      <div class="composer">
+        <textarea id="prompt" placeholder="Napisz wiadomość do WG AI..." rows="1"></textarea>
+        <div id="fileInfo"></div>
+        <div class="compose-row">
+          <div class="compose-left">
+            <button class="btn iconbtn" id="attachBtn" title="Dodaj plik">＋</button>
+            <input type="file" id="fileInput" hidden accept="image/*,.pdf,.txt,.doc,.docx,.csv">
+            <button class="btn iconbtn" id="micBtn" title="Dyktuj">🎙</button>
+            <select class="model-select" id="model"><option value="gpt-4.1-mini">WG AI · szybki</option><option value="gpt-4.1">WG AI · zaawansowany</option></select>
+            <span class="status" id="sendStatus"></span>
+          </div>
+          <button class="send" id="sendBtn" title="Wyślij">➤</button>
+        </div>
+      </div>
+      <div class="hint">WG AI może popełniać błędy. Sprawdzaj ważne informacje.</div>
+    </div>
+  </section>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const API_URL='/api/chat'; // Backend powinien udostępniać POST /api/chat.
+let chats=JSON.parse(localStorage.getItem('wgai_chats')||'[]');
+let currentId=null, attachedFile=null, busy=false;
+const save=()=>localStorage.setItem('wgai_chats',JSON.stringify(chats));
+function current(){return chats.find(c=>c.id===currentId)}
+function newChat(){const c={id:Date.now().toString(),title:'Nowa rozmowa',messages:[]};chats.unshift(c);currentId=c.id;save();render();$('prompt').focus();$('sidebar').classList.remove('open')}
+function renderHistory(){const el=$('history');el.innerHTML='';chats.forEach(c=>{const b=document.createElement('button');b.textContent='▤  '+c.title;b.className=c.id===currentId?'active':'';b.onclick=()=>{currentId=c.id;render();$('sidebar').classList.remove('open')};el.append(b)})}
+function safeText(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function formatText(s){return safeText(s).replace(/```([\s\S]*?)```/g,'<pre>$1</pre>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}
+function render(){renderHistory();const c=current();$('welcome').style.display=c&&c.messages.length?'none':'block';const box=$('messages');box.innerHTML='';if(!c)return;c.messages.forEach((m,i)=>{const row=document.createElement('div');row.className='message '+m.role;const av=document.createElement('div');av.className='avatar';av.textContent=m.role==='user'?'Ty':'✦';const bubble=document.createElement('div');bubble.className='bubble';bubble.innerHTML=formatText(m.content||'');if(m.image){const im=document.createElement('img');im.src=m.image;im.alt='Załączony obraz';bubble.append(im)}if(m.role==='assistant'){const tools=document.createElement('div');tools.className='msg-tools';const copy=document.createElement('button');copy.className='tiny';copy.textContent='Kopiuj';copy.onclick=()=>navigator.clipboard?.writeText(m.content);const speak=document.createElement('button');speak.className='tiny';speak.textContent='Odczytaj';speak.onclick=()=>speakText(m.content);tools.append(copy,speak);bubble.append(tools)}row.append(av,bubble);box.append(row)});box.scrollTop=box.scrollHeight}
+function speakText(t){if(!('speechSynthesis'in window))return alert('Ta przeglądarka nie obsługuje odczytywania głosu.');speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='pl-PL';speechSynthesis.speak(u)}
+function addMessage(role,content,image){const c=current()||(()=>{newChat();return current()})();c.messages.push({role,content,image:image||null});if(c.messages.length===1)c.title=content.slice(0,34)||'Załącznik';save();render()}
+async function send(){if(busy)return;const text=$('prompt').value.trim();if(!text&&!attachedFile)return;if(!current())newChat();let imageData=null,filePayload=null;if(attachedFile){if(attachedFile.type.startsWith('image/')){imageData=await readDataURL(attachedFile);filePayload={name:attachedFile.name,type:attachedFile.type,data:imageData}}else{filePayload={name:attachedFile.name,type:attachedFile.type||'application/octet-stream'} }}
+const userText=text||(attachedFile?'Przeanalizuj załączony plik: '+attachedFile.name:'');addMessage('user',userText,imageData);$('prompt').value='';$('fileInfo').textContent='';attachedFile=null;$('sendBtn').disabled=true;busy=true;$('sendStatus').textContent='Łączenie…';const c=current();const typing=document.createElement('div');typing.className='typing';typing.id='typing';typing.textContent='WG AI pisze…';$('messages').append(typing);
+try{
+ const history=c.messages.slice(0,-1).map(m=>({role:m.role,content:m.content}));
+ const body={message:userText,model:$('model').value,history,attachment:filePayload};
+ const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ if(!res.ok)throw new Error('Serwer odpowiedział błędem ('+res.status+').');
+ const data=await res.json();if(!data.reply)throw new Error(data.error||'Brak odpowiedzi z serwera.');
+ c.messages.push({role:'assistant',content:data.reply});save();render();$('sendStatus').textContent='Połączono';
+}catch(e){const demo='Nie udało mi się połączyć z serwerem AI. '+e.message+'\n\nAby uruchomić prawdziwe odpowiedzi, skonfiguruj backend pod adresem '+API_URL+'. Nie wpisuj klucza API bezpośrednio do pliku HTML.';c.messages.push({role:'assistant',content:demo});save();render();$('sendStatus').textContent='Brak połączenia API'}
+finally{busy=false;$('sendBtn').disabled=false;$('typing')?.remove()}
+}
+function readDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+$('sendBtn').onclick=send;$('prompt').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('prompt').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(e.target.scrollHeight,180)+'px'});
+$('newChat').onclick=newChat;$('clearBtn').onclick=()=>{if(!current())return;if(confirm('Usunąć wiadomości z tej rozmowy?')){current().messages=[];current().title='Nowa rozmowa';save();render()}};$('themeBtn').onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('wgai_theme',document.body.classList.contains('light')?'light':'dark')};if(localStorage.getItem('wgai_theme')==='light')document.body.classList.add('light');
+$('attachBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=e=>{attachedFile=e.target.files[0];$('fileInfo').innerHTML=attachedFile?'<span class="file-chip">📎 '+safeText(attachedFile.name)+' · '+Math.round(attachedFile.size/1024)+' KB</span>':''};
+$('micBtn').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert('Dyktowanie nie jest obsługiwane w tej przeglądarce.');const r=new SR();r.lang='pl-PL';r.onresult=e=>$('prompt').value+=e.results[0][0].transcript;r.onerror=()=>alert('Nie udało się uruchomić mikrofonu. Sprawdź uprawnienia.');r.start()};
+$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');$('settingsBtn').onclick=()=>alert('Adres API: '+API_URL+'\n\nAby podłączyć AI, uruchom backend, który przyjmuje POST /api/chat i zwraca JSON: {"reply":"..."}.\nKlucz API przechowuj wyłącznie na serwerze.');
+document.querySelectorAll('.suggestion').forEach(b=>b.onclick=()=>{$('prompt').value=b.dataset.prompt;send()});
+if(chats.length){currentId=chats[0].id;render()}else newChat();
+</script>
+</body>
+</html>
